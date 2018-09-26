@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs xmlns:android="http://schemas.android.com/apk/res/android">
+    <tab
+        id="@+id/tab_home"
+        icon="@drawable/tab_home"
+        title="首页" />
+    <tab
+        id="@+id/tab_sys"
+        icon="@drawable/tab_sys"
+        title="知识体系" />
+    <tab
+        id="@+id/tab_navigation"
+        icon="@drawable/tab_navigation"
+        title="导航" />
+    <tab
+        id="@+id/tab_project"
+        icon="@drawable/tab_project"
+        title="项目" />
+</tabs>
