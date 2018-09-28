@@ -1,25 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">\
+    android:layout_height="match_parent">
 
 
-    <FrameLayout
-        android:layout_above="@+id/bottomBar"
-        android:layout_alignParentTop="true"
-        android:id="@+id/fl_container"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <com.roughike.bottombar.BottomBar
-        android:layout_alignParentBottom="true"
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:bb_tabXmlResource="@xml/bottombar_tabs"/>
 
-</RelativeLayout>
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:title="玩Android"
+                app:titleTextColor="@color/white"></android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/fl_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="70dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/up"
+            app:backgroundTint="@color/colorAccent"
+            app:elevation="5dp"
+            app:layout_behavior="www.wanandroid.com.wanandroid.behavior.ScrollingViewBehavior"
+            app:layout_anchorGravity="bottom|right|end" />
+
+        <com.roughike.bottombar.BottomBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            app:bb_behavior="shy"
+            app:bb_tabXmlResource="@xml/bottombar_tabs" />
+    </android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="300dp"
+        android:layout_gravity="left"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>

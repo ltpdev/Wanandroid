@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import butterknife.ButterKnife;
@@ -17,6 +18,7 @@ public abstract class BaseActivity extends AutoLayoutActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
+        ARouter.getInstance().inject(this);
         ActivityManager.getInstance().addActivity(this);
         ButterKnife.bind(this);
         init();
