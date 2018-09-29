@@ -32,13 +32,14 @@ import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.adapter.HomeArticleAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.event.UpEvent;
+import www.wanandroid.com.wanandroid.manager.TopLayoutManager;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.Banner;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
 import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
-public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,OnLoadMoreListener{
+public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
     @BindView(R.id.rv_home)
     RecyclerView rvHome;
     @BindView(R.id.smartRefreshLayout)
@@ -57,16 +58,14 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Override
     public void onStart() {
         super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
 
 
-
-
     private void initRecyclerView() {
-        rvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvHome.setLayoutManager(new TopLayoutManager(getActivity()));
         rvHome.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         homeArticleAdapter = new HomeArticleAdapter(datasBeans);
         smartRefreshLayout.setOnLoadMoreListener(this);
@@ -89,7 +88,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     page++;
                     smartRefreshLayout.finishLoadMore(true);
                 } else {
-                    smartRefreshLayout.finishLoadMore(0,false,true);
+                    smartRefreshLayout.finishLoadMore(0, false, true);
                 }
             }
 
@@ -99,8 +98,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             }
         });
     }
-
-
 
 
     private void requestIndexBanner() {
@@ -158,10 +155,11 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpEvent(UpEvent msg) {
-        if (isVisible()&&msg.isUp()){
-            ToastUtil.showText(getActivity(),"isVisible");
+        if (isVisible() && msg.isUp()) {
+            //ToastUtil.showText(getActivity(),"isVisible");
+            //rvHome.smoothScrollToPosition(0);
             rvHome.smoothScrollToPosition(0);
-
+            //homeArticleAdapter.notifyDataSetChanged();
         }
     }
 
