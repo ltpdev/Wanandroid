@@ -6,9 +6,11 @@ import com.alibaba.android.arouter.launcher.ARouter;
 
 public class App extends Application{
 
+    private static App instance;
     @Override
     public void onCreate() {
         super.onCreate();
+        instance=this;
         initARouter();
     }
 
@@ -22,5 +24,10 @@ public class App extends Application{
     public void onTerminate() {
         super.onTerminate();
         ARouter.getInstance().destroy();
+    }
+
+
+    public static App getInst() {
+        return instance;
     }
 }

@@ -181,7 +181,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                      HttpUtil.collectArticle(id, new MyObserver() {
                          @Override
                          protected void onRequestSuccess(Object data) {
-
+                              ToastUtil.showText(getActivity(),"收藏成功");
                          }
 
                          @Override
