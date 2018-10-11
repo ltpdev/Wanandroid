@@ -39,7 +39,7 @@ import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
 import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
-public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
+public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener, OnLoadMoreListener{
     @BindView(R.id.rv_home)
     RecyclerView rvHome;
     @BindView(R.id.smartRefreshLayout)
@@ -47,6 +47,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private HomeArticleAdapter homeArticleAdapter;
     private int page = 0;
     private List<IndexArticle.DatasBean> datasBeans = new ArrayList<>();
+    private boolean move=false;
 
     @Override
     protected void init() {
@@ -65,11 +66,12 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
 
     private void initRecyclerView() {
-        rvHome.setLayoutManager(new TopLayoutManager(getActivity()));
+        rvHome.setLayoutManager(new TopLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));
         rvHome.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         homeArticleAdapter = new HomeArticleAdapter(datasBeans);
         smartRefreshLayout.setOnLoadMoreListener(this);
         homeArticleAdapter.setOnItemClickListener(this);
+        homeArticleAdapter.setOnItemChildClickListener(this);
         rvHome.setAdapter(homeArticleAdapter);
     }
 
@@ -157,7 +159,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void onUpEvent(UpEvent msg) {
         if (isVisible() && msg.isUp()) {
             //ToastUtil.showText(getActivity(),"isVisible");
-            //rvHome.smoothScrollToPosition(0);
             rvHome.smoothScrollToPosition(0);
             //homeArticleAdapter.notifyDataSetChanged();
         }
@@ -167,5 +168,15 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         requestData();
+    }
+
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+             switch (view.getId()){
+                 case R.id.iv_love:
+                     ToastUtil.showText(getActivity(),"hhaaaa");
+                     break;
+             }
     }
 }
