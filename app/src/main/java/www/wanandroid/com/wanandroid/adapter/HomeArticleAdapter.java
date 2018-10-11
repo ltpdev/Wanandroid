@@ -40,6 +40,12 @@ public class HomeArticleAdapter extends BaseMultiItemQuickAdapter<IndexArticle.D
         helper.setText(R.id.tv_time, item.getNiceDate());
         helper.setText(R.id.tv_title, item.getTitle());
         helper.setText(R.id.tv_tag, item.getChapterName());
+        helper.addOnClickListener(R.id.iv_love);
+        if (item.isCollect()){
+            helper.setImageResource(R.id.iv_love,R.mipmap.love_red);
+        }else {
+            helper.setImageResource(R.id.iv_love,R.mipmap.love);
+        }
         switch (helper.getItemViewType()) {
             case IndexArticle.DatasBean.TEXT:
                 break;

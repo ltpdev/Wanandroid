@@ -1,9 +1,13 @@
 package www.wanandroid.com.wanandroid.fragment;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -22,16 +26,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.adapter.HomeArticleAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.event.UpEvent;
+import www.wanandroid.com.wanandroid.manager.TopLayoutManager;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.Banner;
+import www.wanandroid.com.wanandroid.service.bean.HttpResult;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
+import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
-public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
+public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener, OnLoadMoreListener{
     @BindView(R.id.rv_home)
     RecyclerView rvHome;
     @BindView(R.id.smartRefreshLayout)
@@ -57,11 +68,12 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
 
     private void initRecyclerView() {
-        //rvHome.setLayoutManager(new TopLayoutManager(getActivity()));
+        rvHome.setLayoutManager(new TopLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));
         rvHome.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         homeArticleAdapter = new HomeArticleAdapter(datasBeans);
         smartRefreshLayout.setOnLoadMoreListener(this);
         homeArticleAdapter.setOnItemClickListener(this);
+        homeArticleAdapter.setOnItemChildClickListener(this);
         rvHome.setAdapter(homeArticleAdapter);
     }
 
@@ -149,7 +161,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void onUpEvent(UpEvent msg) {
         if (isVisible() && msg.isUp()) {
             //ToastUtil.showText(getActivity(),"isVisible");
-            //rvHome.smoothScrollToPosition(0);
             rvHome.smoothScrollToPosition(0);
             //homeArticleAdapter.notifyDataSetChanged();
         }
@@ -159,5 +170,26 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         requestData();
+    }
+
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+             switch (view.getId()){
+                 case R.id.iv_love:
+                     int id=((HomeArticleAdapter) adapter).getData().get(position).getId();
+                     HttpUtil.collectArticle(id, new MyObserver() {
+                         @Override
+                         protected void onRequestSuccess(Object data) {
+
+                         }
+
+                         @Override
+                         protected void onRequestError() {
+
+                         }
+                     });
+                     break;
+             }
     }
 }
