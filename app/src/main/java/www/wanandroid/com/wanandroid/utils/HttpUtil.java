@@ -24,4 +24,17 @@ public class HttpUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
     }
+
+    //收藏站内文章
+    public static void collectArticle(int id,Observer observer){
+        RetrofitClient.getInstance().createRetrofitService().collectArticle(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
+    }
+    //用户登录
+    public static void userLogin(String username,String password,Observer observer){
+        RetrofitClient.getInstance().createRetrofitService().userLogin(username,password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
+    }
 }

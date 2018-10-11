@@ -28,6 +28,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.adapter.HomeArticleAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
@@ -35,6 +37,7 @@ import www.wanandroid.com.wanandroid.event.UpEvent;
 import www.wanandroid.com.wanandroid.manager.TopLayoutManager;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.Banner;
+import www.wanandroid.com.wanandroid.service.bean.HttpResult;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
 import www.wanandroid.com.wanandroid.utils.ToastUtil;
@@ -47,7 +50,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private HomeArticleAdapter homeArticleAdapter;
     private int page = 0;
     private List<IndexArticle.DatasBean> datasBeans = new ArrayList<>();
-    private boolean move=false;
 
     @Override
     protected void init() {
@@ -175,7 +177,18 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
              switch (view.getId()){
                  case R.id.iv_love:
-                     ToastUtil.showText(getActivity(),"hhaaaa");
+                     int id=((HomeArticleAdapter) adapter).getData().get(position).getId();
+                     HttpUtil.collectArticle(id, new MyObserver() {
+                         @Override
+                         protected void onRequestSuccess(Object data) {
+
+                         }
+
+                         @Override
+                         protected void onRequestError() {
+
+                         }
+                     });
                      break;
              }
     }
