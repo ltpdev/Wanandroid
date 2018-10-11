@@ -1,13 +1,9 @@
 package www.wanandroid.com.wanandroid.fragment;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,18 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.adapter.HomeArticleAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.event.UpEvent;
-import www.wanandroid.com.wanandroid.manager.TopLayoutManager;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.Banner;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
-import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
 public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
     @BindView(R.id.rv_home)
@@ -65,7 +57,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
 
     private void initRecyclerView() {
-        rvHome.setLayoutManager(new TopLayoutManager(getActivity()));
+        //rvHome.setLayoutManager(new TopLayoutManager(getActivity()));
         rvHome.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         homeArticleAdapter = new HomeArticleAdapter(datasBeans);
         smartRefreshLayout.setOnLoadMoreListener(this);
