@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
+import java.util.HashSet;
 
 import www.wanandroid.com.wanandroid.app.App;
 
@@ -57,6 +58,13 @@ public class SpUtil {
         getSharedPreferences().edit().putLong(key, value).apply();
     }
 
+    public static void writeStringSet(String key, HashSet<String> value) {
+        getSharedPreferences().edit().putStringSet(key, value).apply();
+    }
+
+    public static HashSet<String> readStringSet(String key) {
+        return (HashSet<String>) getSharedPreferences().getStringSet(key,new HashSet<String>());
+    }
     public static void remove(String key) {
         getSharedPreferences().edit().remove(key).apply();
     }

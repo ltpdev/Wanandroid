@@ -9,5 +9,5 @@ public class Constant {
     public static final String KEY_WEBVIEW = "htmlUrl";
     // 代表登录失效，需要重新登录。
     public static final int LOGIN_INVALID=-1001;
-
+    public static final String PREF_COOKIES = "pref_cookies";
 }
