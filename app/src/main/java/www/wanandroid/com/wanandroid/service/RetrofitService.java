@@ -22,9 +22,11 @@ public interface RetrofitService {
     @GET("banner/json")
     Observable<HttpResult<List<Banner>>> getIndexBanner();
     //收藏站内文章
-    @FormUrlEncoded
     @POST("/lg/collect/{id}/json")
-    Observable<HttpResult> collectArticle(@Field("id") int id);
+    Observable<HttpResult> collectArticle(@Path("id") int id);
+    //取消收藏(文章列表)
+    @POST("/lg/uncollect_originId/{id}/json")
+    Observable<HttpResult> cancleCollect(@Path("id") int id);
     //用户登录
     @FormUrlEncoded
     @POST("/user/login")

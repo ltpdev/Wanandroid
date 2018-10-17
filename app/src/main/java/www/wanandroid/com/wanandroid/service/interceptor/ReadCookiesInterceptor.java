@@ -17,7 +17,7 @@ public class ReadCookiesInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
         HashSet<String> preferences = (HashSet) SpUtil.readStringSet(Constant.PREF_COOKIES);
-        builder.addHeader("Content-type", "application/json; charset=utf-8");
+        //builder.addHeader("Content-type", "application/json; charset=utf-8");
         for (String cookie : preferences) {
             builder.addHeader("Cookie", cookie);
             Log.i("OkHttp", "Adding Header: " + cookie); // This is done so I know which headers are being added; this interceptor is used after the normal logging of OkHttp

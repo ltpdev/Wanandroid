@@ -25,24 +25,11 @@
                 app:titleTextColor="@color/white"></android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
+        <FrameLayout
+            android:id="@+id/fl_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:id="@+id/fl_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fb"
@@ -54,8 +41,8 @@
             android:src="@mipmap/up"
             app:backgroundTint="@color/colorAccent"
             app:elevation="5dp"
-            app:layout_behavior="www.wanandroid.com.wanandroid.behavior.ScrollingViewBehavior"
-            app:layout_anchorGravity="bottom|right|end" />
+            app:layout_anchorGravity="bottom|right|end"
+            app:layout_behavior="www.wanandroid.com.wanandroid.behavior.ScrollingViewBehavior" />
 
         <com.roughike.bottombar.BottomBar
             android:id="@+id/bottomBar"
@@ -67,11 +54,10 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <LinearLayout
-        android:background="@color/colorPrimary"
         android:layout_width="300dp"
+        android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-    </LinearLayout>
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"></LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

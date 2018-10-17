@@ -54,7 +54,9 @@ public class HomeArticleAdapter extends BaseMultiItemQuickAdapter<IndexArticle.D
                 Glide.with(helper.itemView.getContext()).load(item.getEnvelopePic()).into(imageView);
                 break;
         }
-
-
     }
+
+
+
+
 }
