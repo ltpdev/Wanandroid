@@ -36,6 +36,15 @@ public class HttpUtil {
         subscribe(RetrofitClient.getInstance().createRetrofitService().cancleCollect(id),observer);
     }
 
+    //获取知识体系
+    public static void getKnowledgeSystem(Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getKnowledgeSystem(),observer);
+    }
+    //获取单个知识体系列表
+    public static void getKnowledgeClassifyList(int page,int id,Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getKnowledgeClassifyList(page,id),observer);
+    }
+
     //订阅关系
     private static void subscribe(Observable observable,Observer observer){
         observable.subscribeOn(Schedulers.io())

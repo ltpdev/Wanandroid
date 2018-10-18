@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,28 +23,42 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import www.wanandroid.com.wanandroid.R;
-import www.wanandroid.com.wanandroid.activity.TestActivity;
-import www.wanandroid.com.wanandroid.adapter.MyAdater;
+import www.wanandroid.com.wanandroid.activity.KnowledgeClassifyActivity;
+import www.wanandroid.com.wanandroid.adapter.KnowledgeSystemAdapter;
+import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.event.UpEvent;
+import www.wanandroid.com.wanandroid.observer.MyObserver;
+import www.wanandroid.com.wanandroid.service.bean.KnowledgeSystem;
+import www.wanandroid.com.wanandroid.utils.HttpUtil;
 import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
-public class SystemFragment extends BaseFragment {
-    @BindView(R.id.rv)
-    RecyclerView rv;
-    private MyAdater myAdater;
-    private List<String> strings;
+public class SystemFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener{
+    @BindView(R.id.rvSystem)
+    RecyclerView rvSystem;
+    private KnowledgeSystemAdapter knowledgeSystemAdapter;
 
     @Override
     protected void init() {
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        strings = new ArrayList<>();
-        myAdater = new MyAdater(strings, getActivity());
-        rv.setAdapter(myAdater);
-        for (int i = 0; i < 50; i++) {
-            strings.add("张三" + i);
-        }
-        myAdater.notifyDataSetChanged();
+        rvSystem.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvSystem.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        knowledgeSystemAdapter=new KnowledgeSystemAdapter(R.layout.item_knowledge_system);
+        rvSystem.setAdapter(knowledgeSystemAdapter);
+        knowledgeSystemAdapter.setOnItemClickListener(this);
+        requestData();
+    }
+
+    private void requestData() {
+        HttpUtil.getKnowledgeSystem(new MyObserver<List<KnowledgeSystem>>() {
+            @Override
+            protected void onRequestSuccess(List<KnowledgeSystem> data) {
+                knowledgeSystemAdapter.addData(data);
+            }
+
+            @Override
+            protected void onRequestError() {
+
+            }
+        });
     }
 
     @Override
@@ -59,19 +75,29 @@ public class SystemFragment extends BaseFragment {
     }
 
 
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpEvent(UpEvent msg) {
         if (isVisible() && msg.isUp()) {
-            rv.smoothScrollToPosition(0);
+            rvSystem.smoothScrollToPosition(0);
         }
     }
 
 
 
-    @OnClick(R.id.btn_go)
-    public void onViewClicked() {
-       rv.smoothScrollToPosition(0);
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+         KnowledgeSystem knowledgeSystem=((KnowledgeSystemAdapter)adapter).getData().get(position);
+        Intent intent=new Intent(getActivity(), KnowledgeClassifyActivity.class);
+        intent.putExtra(Constant.KNOWLEDGE,knowledgeSystem);
+        startActivity(intent);
     }
 }

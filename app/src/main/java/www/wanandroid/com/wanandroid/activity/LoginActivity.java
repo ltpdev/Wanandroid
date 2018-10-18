@@ -6,11 +6,14 @@ import android.widget.EditText;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.constant.Constant;
+import www.wanandroid.com.wanandroid.event.RefreshEvent;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.UserInfo;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
@@ -48,6 +51,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             protected void onRequestSuccess(UserInfo data) {
                 ToastUtil.showText(LoginActivity.this,"登录成功");
+                EventBus.getDefault().post(new RefreshEvent(true));
                 finish();
             }
 

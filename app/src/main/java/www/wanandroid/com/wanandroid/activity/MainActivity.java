@@ -1,5 +1,6 @@
 package www.wanandroid.com.wanandroid.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -90,6 +91,20 @@ public class MainActivity extends BaseActivity {
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
+                switch (tabId) {
+                    case R.id.tab_home:
+                        toolbar.setTitle("玩Android");
+                        break;
+                    case R.id.tab_sys:
+                        toolbar.setTitle("知识体系");
+                        break;
+                    case R.id.tab_navigation:
+                        toolbar.setTitle("导航");
+                        break;
+                    case R.id.tab_project:
+                        toolbar.setTitle("项目");
+                        break;
+                }
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.fl_container, FragmentFactory.getInstance().getFragment(tabId));
                 transaction.commit();
@@ -123,6 +138,8 @@ public class MainActivity extends BaseActivity {
 
         return super.onKeyDown(keyCode, event);
     }
+
+
 
 
 

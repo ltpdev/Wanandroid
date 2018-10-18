@@ -1,5 +1,6 @@
 package www.wanandroid.com.wanandroid.fragment;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,6 +28,7 @@ import butterknife.BindView;
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.adapter.HomeArticleAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
+import www.wanandroid.com.wanandroid.event.RefreshEvent;
 import www.wanandroid.com.wanandroid.event.UpEvent;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.Banner;
@@ -33,7 +36,7 @@ import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
 import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
-public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener, OnLoadMoreListener {
+public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener, OnLoadMoreListener, OnRefreshListener {
     @BindView(R.id.rv_home)
     RecyclerView rvHome;
     @BindView(R.id.smartRefreshLayout)
@@ -41,6 +44,8 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private HomeArticleAdapter homeArticleAdapter;
     private int page = 0;
     private List<IndexArticle.DatasBean> datasBeans = new ArrayList<>();
+    //是否在刷新
+    private boolean isRefreshing = false;
 
     @Override
     protected void init() {
@@ -63,6 +68,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         rvHome.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         homeArticleAdapter = new HomeArticleAdapter(datasBeans);
         smartRefreshLayout.setOnLoadMoreListener(this);
+        smartRefreshLayout.setOnRefreshListener(this);
         homeArticleAdapter.setOnItemClickListener(this);
         homeArticleAdapter.setOnItemChildClickListener(this);
         rvHome.setAdapter(homeArticleAdapter);
@@ -79,17 +85,33 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             @Override
             protected void onRequestSuccess(IndexArticle indexArticle) {
                 if (indexArticle.getDatas().size() > 0) {
+                    if (isRefreshing) {
+                        homeArticleAdapter.getData().clear();
+                    }
                     homeArticleAdapter.addData(indexArticle.getDatas());
                     page++;
-                    smartRefreshLayout.finishLoadMore(true);
+                    if (isRefreshing) {
+                        smartRefreshLayout.finishRefresh(true);
+                    } else {
+                        smartRefreshLayout.finishLoadMore(true);
+                    }
                 } else {
-                    smartRefreshLayout.finishLoadMore(0, false, true);
+                    if (isRefreshing) {
+                        smartRefreshLayout.finishRefresh(0,false);
+                    } else {
+                        smartRefreshLayout.finishLoadMore(0, false, true);
+                    }
                 }
             }
 
             @Override
             protected void onRequestError() {
-                smartRefreshLayout.finishLoadMore(false);
+                if (isRefreshing) {
+                    smartRefreshLayout.finishRefresh(false);
+                }else {
+                    smartRefreshLayout.finishLoadMore(false);
+                }
+
             }
         });
     }
@@ -114,14 +136,18 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                         }
                     });
                 }
-
+                page = 0;
+                homeArticleAdapter.removeAllHeaderView();
+                homeArticleAdapter.notifyDataSetChanged();
                 homeArticleAdapter.addHeaderView(headerView);
 
             }
 
             @Override
             protected void onRequestError() {
-
+                 if (isRefreshing){
+                     smartRefreshLayout.finishRefresh(false);
+                 }
             }
 
             @Override
@@ -144,9 +170,14 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpEvent(UpEvent msg) {
@@ -157,8 +188,17 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshEvent(RefreshEvent event) {
+        if (event.isRefreshing()) {
+           smartRefreshLayout.autoRefresh();
+        }
+    }
+
+
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        isRefreshing = false;
         requestData();
     }
 
@@ -177,7 +217,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 break;
         }
     }
-
 
 
     //取消收藏文章
@@ -214,6 +253,14 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             }
         });
     }
+
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        isRefreshing = true;
+        requestIndexBanner();
+    }
+
 
 
 }

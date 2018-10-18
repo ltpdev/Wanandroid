@@ -1,7 +1,9 @@
 package www.wanandroid.com.wanandroid.activity;
 
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +34,7 @@ public class WebViewActivity extends BaseActivity {
     WebView webview;
     @Autowired(name = Constant.KEY_WEBVIEW)
     String htmlUrl;
-    private List<String> loadHistoryUrls = new ArrayList<>();
+
 
     @Override
     protected void init() {
@@ -56,7 +58,16 @@ public class WebViewActivity extends BaseActivity {
                                      @Override
                                      public void onPageFinished(WebView view, String url) {
                                          super.onPageFinished(view, url);
-                                         loadHistoryUrls.add(url);
+                                         String title = view.getTitle();
+                                         if (!TextUtils.isEmpty(title)) {
+                                             getSupportActionBar().setTitle(title);
+                                         }
+                                     }
+
+                                     @Override
+                                     public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                                         super.onPageStarted(view, url, favicon);
+                                         getSupportActionBar().setTitle("正在加载.....");
                                      }
                                  }
 
@@ -65,6 +76,7 @@ public class WebViewActivity extends BaseActivity {
                                        @Override
                                        public void onProgressChanged(WebView view, int newProgress) {
                                            if (newProgress == 100) {
+                                               getSupportActionBar().setTitle("");
                                                pb.setVisibility(View.GONE);
                                            } else {
                                                pb.setVisibility(View.VISIBLE);
@@ -75,7 +87,7 @@ public class WebViewActivity extends BaseActivity {
                                        @Override
                                        public void onReceivedTitle(WebView view, String title) {
                                            super.onReceivedTitle(view, title);
-                                           getSupportActionBar().setTitle(title);
+
                                        }
                                    }
 
@@ -85,7 +97,6 @@ public class WebViewActivity extends BaseActivity {
 
     private void initToolbar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("正在加载.....");
     }
 
     @Override
@@ -98,29 +109,13 @@ public class WebViewActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (webview.canGoBack()) {
-                if (loadHistoryUrls.size() > 1) {
-                    //重新加载之前的页面,这里为了让标题也能正常显示
-                    String url = loadHistoryUrls.get(loadHistoryUrls.size() - 2);
-                    loadHistoryUrls.remove(loadHistoryUrls.size() - 1);
-                    if (loadHistoryUrls.size() > 0) {
-                        loadHistoryUrls.remove(loadHistoryUrls.size() - 1);
-                    }
-                    webview.loadUrl(url);
-                    return true;
-                }
+                webview.goBack();
+                return true;
             }
         }
         return super.onKeyDown(keyCode, event);
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }
