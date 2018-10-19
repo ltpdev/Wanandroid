@@ -76,7 +76,6 @@ public class WebViewActivity extends BaseActivity {
                                        @Override
                                        public void onProgressChanged(WebView view, int newProgress) {
                                            if (newProgress == 100) {
-                                               getSupportActionBar().setTitle("");
                                                pb.setVisibility(View.GONE);
                                            } else {
                                                pb.setVisibility(View.VISIBLE);

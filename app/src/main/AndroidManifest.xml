@@ -40,7 +40,8 @@
             android:name=".activity.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.KnowledgeClassifyActivity"></activity>
+        <activity android:name=".activity.KnowledgeClassifyActivity"
+            android:theme="@style/NoActionBar"></activity>
     </application>
 
 </manifest>

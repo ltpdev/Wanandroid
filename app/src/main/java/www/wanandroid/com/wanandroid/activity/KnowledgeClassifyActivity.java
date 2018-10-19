@@ -3,8 +3,9 @@ package www.wanandroid.com.wanandroid.activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class KnowledgeClassifyActivity extends BaseActivity {
     TabLayout tablayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.knowledge_toolbar)
+    Toolbar knowledgeToolbar;
     private FragmentAdapter fragmentAdapter;
     private List<String> titles = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
@@ -33,9 +36,14 @@ public class KnowledgeClassifyActivity extends BaseActivity {
     protected void init() {
         knowledgeSystem = (KnowledgeSystem) getIntent().getSerializableExtra(Constant.KNOWLEDGE);
         if (knowledgeSystem != null) {
-            getSupportActionBar().setTitle(knowledgeSystem.getName());
+            knowledgeToolbar.setTitle(knowledgeSystem.getName());
         }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        knowledgeToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         initTablayoutAndViewPager();
     }
 
@@ -58,6 +66,7 @@ public class KnowledgeClassifyActivity extends BaseActivity {
         viewPager.setAdapter(fragmentAdapter);
         tablayout.setupWithViewPager(viewPager);
     }
+
 
 
 }
