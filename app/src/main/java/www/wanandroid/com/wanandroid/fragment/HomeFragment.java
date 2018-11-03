@@ -9,13 +9,13 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,6 +30,7 @@ import www.wanandroid.com.wanandroid.adapter.HomeArticleAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.event.RefreshEvent;
 import www.wanandroid.com.wanandroid.event.UpEvent;
+import www.wanandroid.com.wanandroid.manager.GlideImageLoader;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.Banner;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
@@ -46,6 +47,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private List<IndexArticle.DatasBean> datasBeans = new ArrayList<>();
     //是否在刷新
     private boolean isRefreshing = false;
+    private com.youth.banner.Banner banner;
 
     @Override
     protected void init() {
@@ -60,6 +62,10 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        if (banner != null) {
+            banner.startAutoPlay();
+        }
+
     }
 
 
@@ -97,7 +103,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                     }
                 } else {
                     if (isRefreshing) {
-                        smartRefreshLayout.finishRefresh(0,false);
+                        smartRefreshLayout.finishRefresh(0, false);
                     } else {
                         smartRefreshLayout.finishLoadMore(0, false, true);
                     }
@@ -108,7 +114,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             protected void onRequestError() {
                 if (isRefreshing) {
                     smartRefreshLayout.finishRefresh(false);
-                }else {
+                } else {
                     smartRefreshLayout.finishLoadMore(false);
                 }
 
@@ -120,22 +126,34 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private void requestIndexBanner() {
         HttpUtil.getIndexBanner(new MyObserver<List<Banner>>() {
             @Override
-            protected void onRequestSuccess(List<Banner> data) {
+            protected void onRequestSuccess(final List<Banner> data) {
                 View headerView = View.inflate(getActivity(), R.layout.list_header, null);
-                SliderLayout sliderLayout = (SliderLayout) headerView.findViewById(R.id.sliderlayout);
-                for (final Banner banner : data) {
-                    TextSliderView textSliderView = new TextSliderView(getActivity());
-                    textSliderView.description(banner.getTitle()).image(banner.getImagePath());
-                    sliderLayout.addSlider(textSliderView);
-                    textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                        @Override
-                        public void onSliderClick(BaseSliderView slider) {
-                            ARouter.getInstance().build(Constant.ACTIVITY_URL_WEBVIEW).
-                                    withString(Constant.KEY_WEBVIEW, banner.getUrl())
-                                    .navigation();
-                        }
-                    });
+                banner = headerView.findViewById(R.id.banner);
+                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+                banner.setImageLoader(new GlideImageLoader());
+                banner.setBannerAnimation(Transformer.DepthPage);
+                banner.isAutoPlay(true);
+                //设置轮播时间
+                banner.setDelayTime(1500);
+                //设置指示器位置（当banner模式中有指示器时）
+                banner.setIndicatorGravity(BannerConfig.CENTER);
+                List<String> urls = new ArrayList<>();
+                List<String> tiles = new ArrayList<>();
+                for (final Banner mBanner : data) {
+                    urls.add(mBanner.getImagePath());
+                    tiles.add(mBanner.getTitle());
                 }
+                banner.setImages(urls);
+                banner.setBannerTitles(tiles);
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        ARouter.getInstance().build(Constant.ACTIVITY_URL_WEBVIEW).
+                                withString(Constant.KEY_WEBVIEW, data.get(position).getUrl())
+                                .navigation();
+                    }
+                });
+                banner.start();
                 page = 0;
                 homeArticleAdapter.removeAllHeaderView();
                 homeArticleAdapter.notifyDataSetChanged();
@@ -145,9 +163,9 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
             @Override
             protected void onRequestError() {
-                 if (isRefreshing){
-                     smartRefreshLayout.finishRefresh(false);
-                 }
+                if (isRefreshing) {
+                    smartRefreshLayout.finishRefresh(false);
+                }
             }
 
             @Override
@@ -168,6 +186,14 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
 
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (banner != null) {
+            banner.stopAutoPlay();
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
@@ -178,6 +204,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpEvent(UpEvent msg) {
@@ -191,7 +218,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshEvent(RefreshEvent event) {
         if (event.isRefreshing()) {
-           smartRefreshLayout.autoRefresh();
+            smartRefreshLayout.autoRefresh();
         }
     }
 
@@ -260,7 +287,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         isRefreshing = true;
         requestIndexBanner();
     }
-
 
 
 }

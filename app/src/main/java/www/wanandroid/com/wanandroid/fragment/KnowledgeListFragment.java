@@ -28,6 +28,7 @@ import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.adapter.KnowledgeClassifyAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.event.RefreshEvent;
+import www.wanandroid.com.wanandroid.event.UpEvent;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeClassify;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
@@ -71,6 +72,22 @@ public class KnowledgeListFragment extends LazyLoadFragment implements BaseQuick
         initRecyclerView();
         requestData();
     }
+
+
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpEvent(UpEvent msg) {
+        if (isVisible() && msg.isUp()) {
+            rvClassify.smoothScrollToPosition(0);
+        }
+    }
+
+
+
+
+
 
 
     private void initRecyclerView() {

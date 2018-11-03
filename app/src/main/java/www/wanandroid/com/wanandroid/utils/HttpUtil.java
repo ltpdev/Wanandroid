@@ -44,7 +44,14 @@ public class HttpUtil {
     public static void getKnowledgeClassifyList(int page,int id,Observer observer){
         subscribe(RetrofitClient.getInstance().createRetrofitService().getKnowledgeClassifyList(page,id),observer);
     }
-
+    //获取微信公众号文章tabs
+    public static void getWeChatArticleTabs(Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getWxArticleTabs(),observer);
+    }
+    //获取微信公众号文章列表
+    public static void getWeChatArticles(int id,int page,Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getWxArticleList(id,page),observer);
+    }
     //订阅关系
     private static void subscribe(Observable observable,Observer observer){
         observable.subscribeOn(Schedulers.io())

@@ -15,6 +15,8 @@ import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeClassify;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeSystem;
 import www.wanandroid.com.wanandroid.service.bean.UserInfo;
+import www.wanandroid.com.wanandroid.service.bean.WxArticle;
+import www.wanandroid.com.wanandroid.service.bean.WxArticleChapters;
 
 public interface RetrofitService {
     //获取首页文章列表
@@ -45,4 +47,11 @@ public interface RetrofitService {
     //获取单个知识体系列表
     @GET("article/list/{page}/json")
     Observable<HttpResult<KnowledgeClassify>> getKnowledgeClassifyList(@Path("page") int page, @Query("cid") int id);
+    //获取公众号列表tabs
+    @GET("wxarticle/chapters/json")
+    Observable<HttpResult<List<WxArticleChapters>>>getWxArticleTabs();
+    //获取公众号列表
+    @GET("wxarticle/list/{id}/{page}/json")
+    Observable<HttpResult<WxArticle>>getWxArticleList(@Path("id") int id,@Path("page") int page);
+
 }
