@@ -1,9 +1,11 @@
 package www.wanandroid.com.wanandroid.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -32,4 +34,7 @@ public class FragmentAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position) {
         return list_Title.get(position%list_Title.size());
     }
+
+
+
 }

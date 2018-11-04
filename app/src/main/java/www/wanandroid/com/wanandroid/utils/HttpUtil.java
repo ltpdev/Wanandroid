@@ -52,6 +52,10 @@ public class HttpUtil {
     public static void getWeChatArticles(int id,int page,Observer observer){
         subscribe(RetrofitClient.getInstance().createRetrofitService().getWxArticleList(id,page),observer);
     }
+    //获取导航数据列表
+    public static void getNavigationList(Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getNavigationList(),observer);
+    }
     //订阅关系
     private static void subscribe(Observable observable,Observer observer){
         observable.subscribeOn(Schedulers.io())

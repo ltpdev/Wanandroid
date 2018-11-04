@@ -47,7 +47,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     private List<IndexArticle.DatasBean> datasBeans = new ArrayList<>();
     //是否在刷新
     private boolean isRefreshing = false;
-    private com.youth.banner.Banner banner;
+
 
     @Override
     protected void init() {
@@ -61,9 +61,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
-        }
-        if (banner != null) {
-            banner.startAutoPlay();
         }
 
     }
@@ -128,7 +125,7 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
             @Override
             protected void onRequestSuccess(final List<Banner> data) {
                 View headerView = View.inflate(getActivity(), R.layout.list_header, null);
-                banner = headerView.findViewById(R.id.banner);
+                com.youth.banner.Banner banner = headerView.findViewById(R.id.banner);
                 banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
                 banner.setImageLoader(new GlideImageLoader());
                 banner.setBannerAnimation(Transformer.DepthPage);
@@ -188,9 +185,6 @@ public class HomeFragment extends BaseFragment implements BaseQuickAdapter.OnIte
     @Override
     public void onStop() {
         super.onStop();
-        if (banner != null) {
-            banner.stopAutoPlay();
-        }
     }
 
     @Override

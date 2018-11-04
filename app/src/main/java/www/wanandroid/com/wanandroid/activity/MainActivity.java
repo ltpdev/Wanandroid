@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.tab_project:
                         toolbar.setTitle("项目");
+                        break;
                     case R.id.tab_wechat:
                         toolbar.setTitle("公众号");
                         break;
@@ -140,9 +141,6 @@ public class MainActivity extends BaseActivity {
 
         return super.onKeyDown(keyCode, event);
     }
-
-
-
 
 
 }

@@ -14,6 +14,7 @@ import www.wanandroid.com.wanandroid.adapter.FragmentAdapter;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.WxArticleChapters;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
+import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
 public class WechatFragment extends BaseFragment {
     @BindView(R.id.tablayout)
@@ -38,7 +39,7 @@ public class WechatFragment extends BaseFragment {
                     fragments.add(KnowledgeListFragment.getInstance(wxArticleChapters.getId()));
                 }
                 viewPager.setOffscreenPageLimit(data.size());
-                fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);
+                fragmentAdapter = new FragmentAdapter(getFragmentManager(), fragments, titles);
                 viewPager.setAdapter(fragmentAdapter);
                 tablayout.setupWithViewPager(viewPager);
             }
