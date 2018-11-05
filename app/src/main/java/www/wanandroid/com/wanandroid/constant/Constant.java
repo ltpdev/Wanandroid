@@ -13,4 +13,5 @@ public class Constant {
     public static final String PREF_COOKIES = "pref_cookies";
     public static final String KNOWLEDGE = "knowledge";
     public static final String KNOWLEDGE_CID = "knowledge_cid";
+    public static final String PROJECT_CID = "project_cid";
 }

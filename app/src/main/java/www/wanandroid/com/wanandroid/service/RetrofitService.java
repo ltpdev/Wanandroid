@@ -15,6 +15,8 @@ import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeClassify;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeSystem;
 import www.wanandroid.com.wanandroid.service.bean.Navigation;
+import www.wanandroid.com.wanandroid.service.bean.Project;
+import www.wanandroid.com.wanandroid.service.bean.ProjectClassification;
 import www.wanandroid.com.wanandroid.service.bean.UserInfo;
 import www.wanandroid.com.wanandroid.service.bean.WxArticle;
 import www.wanandroid.com.wanandroid.service.bean.WxArticleChapters;
@@ -57,4 +59,10 @@ public interface RetrofitService {
     //获取导航数据
     @GET("navi/json")
     Observable<HttpResult<List<Navigation>>>getNavigationList();
+    //获取项目分类
+    @GET("project/tree/json")
+    Observable<HttpResult<List<ProjectClassification>>>getProjectClassification();
+    //获取项目具体列表
+    @GET("project/list/{page}/json")
+    Observable<HttpResult<Project>>getProjectList(@Path("page") int page, @Query("cid") int cid);
 }

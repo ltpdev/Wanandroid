@@ -7,6 +7,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.http.Query;
 import www.wanandroid.com.wanandroid.service.RetrofitClient;
 import www.wanandroid.com.wanandroid.service.bean.HttpResult;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
@@ -55,6 +56,14 @@ public class HttpUtil {
     //获取导航数据列表
     public static void getNavigationList(Observer observer){
         subscribe(RetrofitClient.getInstance().createRetrofitService().getNavigationList(),observer);
+    }
+    //获取项目分类
+    public static void getProjectClassification(Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getProjectClassification(),observer);
+    }
+    //获取项目分类
+    public static void getProjectList(int page, int cid,Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getProjectList(page,cid),observer);
     }
     //订阅关系
     private static void subscribe(Observable observable,Observer observer){
