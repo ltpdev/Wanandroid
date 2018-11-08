@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <TextView
+      android:layout_marginLeft="10dp"
+      android:id="@+id/tv_keyword"
+      android:text="搜索历史"
+      android:textSize="20sp"
+      android:textColor="@color/colorAccent"
+      android:singleLine="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+  <TextView
+      android:id="@+id/tv_del_all"
+      android:layout_alignParentRight="true"
+      android:layout_marginRight="10dp"
+      android:layout_centerVertical="true"
+      android:text="清空"
+      android:textSize="18sp"
+      android:textColor="@android:color/darker_gray"
+      android:singleLine="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+</RelativeLayout>

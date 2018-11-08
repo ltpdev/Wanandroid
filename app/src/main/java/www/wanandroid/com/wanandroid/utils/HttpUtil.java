@@ -65,6 +65,14 @@ public class HttpUtil {
     public static void getProjectList(int page, int cid,Observer observer){
         subscribe(RetrofitClient.getInstance().createRetrofitService().getProjectList(page,cid),observer);
     }
+    //获取热门搜索
+    public static void getHotSearchWord(Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getHotSearchWord(),observer);
+    }
+    //搜索文章
+    public static void searchArticle(int page,String keyWord,Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().searchArticle(page,keyWord),observer);
+    }
     //订阅关系
     private static void subscribe(Observable observable,Observer observer){
         observable.subscribeOn(Schedulers.io())

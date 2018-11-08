@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -56,4 +56,12 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     //banner
     implementation 'com.youth.banner:banner:1.4.10'  //最新版本
+    //数据库框架
+    implementation 'org.greenrobot:greendao:3.0.1'
+    implementation 'org.greenrobot:greendao-generator:3.0.0'
+}
+greendao {
+    schemaVersion 1
+    daoPackage 'www.wanandroid.com.wanandroid.dao'
+    targetGenDir 'src/main/java'
 }
