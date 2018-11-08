@@ -53,7 +53,7 @@ public class ProjectFragment extends BaseFragment {
                     fragments.add(ProjectListFragment.getInstance(projectClassification.getId()));
                 }
                 viewPager.setOffscreenPageLimit(data.size());
-                fragmentAdapter = new FragmentAdapter(getFragmentManager(), fragments, titles);
+                fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);
                 viewPager.setAdapter(fragmentAdapter);
                 tablayout.setupWithViewPager(viewPager);
             }
