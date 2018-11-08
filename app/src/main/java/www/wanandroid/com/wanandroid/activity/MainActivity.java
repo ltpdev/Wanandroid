@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_search:
-                        ToastUtil.showText(MainActivity.this, "搜索");
+                        ARouter.getInstance().build(Constant.ACTIVITY_URL_SEARCH_ARTICLE).navigation();
                         break;
                 }
                 return true;
@@ -109,8 +110,12 @@ public class MainActivity extends BaseActivity {
                         break;
                 }
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fl_container, FragmentFactory.getInstance().getFragment(tabId));
-                transaction.commit();
+                FragmentFactory.getInstance().hideAllFragment(transaction);
+                if (!FragmentFactory.getInstance().getFragment(tabId).isAdded()) {
+                    transaction.add(R.id.fl_container,FragmentFactory.getInstance().getFragment(tabId)).commit();
+                } else {
+                    transaction.show(FragmentFactory.getInstance().getFragment(tabId)).commit();
+                }
             }
         });
         fb.setOnClickListener(new View.OnClickListener() {

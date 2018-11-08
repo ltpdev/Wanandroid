@@ -1,6 +1,7 @@
 package www.wanandroid.com.wanandroid.factory;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.fragment.HomeFragment;
@@ -71,6 +72,28 @@ public class FragmentFactory {
         navigationFragment = null;
         projectFragment = null;
         wechatFragment=null;
+    }
+
+
+    /**
+     * 隐藏所有的fragment
+     */
+    public void hideAllFragment(FragmentTransaction fragmentTransaction) {
+        if (FragmentFactory.getInstance().getHomeFragment().isAdded()) {
+            fragmentTransaction.hide(FragmentFactory.getInstance().getHomeFragment());
+        }
+        if (FragmentFactory.getInstance().getSystemFragment().isAdded()) {
+            fragmentTransaction.hide(FragmentFactory.getInstance().getSystemFragment());
+        }
+        if (FragmentFactory.getInstance().getWechatFragment().isAdded()) {
+            fragmentTransaction.hide(FragmentFactory.getInstance().getWechatFragment());
+        }
+        if (FragmentFactory.getInstance().getNavigationFragment().isAdded()) {
+            fragmentTransaction.hide(FragmentFactory.getInstance().getNavigationFragment());
+        }
+        if (FragmentFactory.getInstance().getProjectFragment().isAdded()) {
+            fragmentTransaction.hide(FragmentFactory.getInstance().getProjectFragment());
+        }
     }
 
 

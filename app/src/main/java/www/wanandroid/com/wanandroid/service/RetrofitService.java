@@ -10,6 +10,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import www.wanandroid.com.wanandroid.service.bean.Banner;
+import www.wanandroid.com.wanandroid.service.bean.HotKey;
 import www.wanandroid.com.wanandroid.service.bean.HttpResult;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeClassify;
@@ -17,6 +18,7 @@ import www.wanandroid.com.wanandroid.service.bean.KnowledgeSystem;
 import www.wanandroid.com.wanandroid.service.bean.Navigation;
 import www.wanandroid.com.wanandroid.service.bean.Project;
 import www.wanandroid.com.wanandroid.service.bean.ProjectClassification;
+import www.wanandroid.com.wanandroid.service.bean.SearchArticle;
 import www.wanandroid.com.wanandroid.service.bean.UserInfo;
 import www.wanandroid.com.wanandroid.service.bean.WxArticle;
 import www.wanandroid.com.wanandroid.service.bean.WxArticleChapters;
@@ -65,4 +67,11 @@ public interface RetrofitService {
     //获取项目具体列表
     @GET("project/list/{page}/json")
     Observable<HttpResult<Project>>getProjectList(@Path("page") int page, @Query("cid") int cid);
+    //获取热门搜索 http://www.wanandroid.com/hotkey/json
+    @GET("hotkey/json")
+    Observable<HttpResult<List<HotKey>>>getHotSearchWord();
+    //搜索
+    @FormUrlEncoded
+    @POST("article/query/{page}/json")
+    Observable<HttpResult<SearchArticle>> searchArticle(@Path("page") int page, @Field("k") String keyWord);
 }

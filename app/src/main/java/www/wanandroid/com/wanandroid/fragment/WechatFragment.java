@@ -39,7 +39,7 @@ public class WechatFragment extends BaseFragment {
                     fragments.add(KnowledgeListFragment.getInstance(wxArticleChapters.getId()));
                 }
                 viewPager.setOffscreenPageLimit(data.size());
-                fragmentAdapter = new FragmentAdapter(getFragmentManager(), fragments, titles);
+                fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);
                 viewPager.setAdapter(fragmentAdapter);
                 tablayout.setupWithViewPager(viewPager);
             }
