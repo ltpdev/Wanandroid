@@ -2,6 +2,7 @@ package www.wanandroid.com.wanandroid.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -25,19 +26,22 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.adapter.SearchHistoryAdapter;
+import www.wanandroid.com.wanandroid.common.LinearSpacingItemDecoration;
 import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.entry.dao.SearchHistory;
 import www.wanandroid.com.wanandroid.manager.DataBaseManager;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.HotKey;
 import www.wanandroid.com.wanandroid.service.bean.Navigation;
+import www.wanandroid.com.wanandroid.utils.DrawableUtils;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
 import www.wanandroid.com.wanandroid.utils.NumberUtil;
+import www.wanandroid.com.wanandroid.utils.SpUtil;
 import www.wanandroid.com.wanandroid.widget.ClearableEditText;
 import www.wanandroid.com.wanandroid.widget.FlowLayout;
 
 @Route(path = Constant.ACTIVITY_URL_SEARCH_ARTICLE)
-public class SearchArticleActivity extends BaseActivity implements TextView.OnEditorActionListener, BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener {
+public class SearchArticleActivity extends BaseActivity implements TextView.OnEditorActionListener, BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener,View.OnClickListener {
 
     @BindView(R.id.edt_keyword)
     ClearableEditText edtKeyword;
@@ -60,8 +64,8 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
     private void initRecyclerView() {
         headView = View.inflate(this, R.layout.head_laout_search_history, null);
         rvSearchHistory.setLayoutManager(new LinearLayoutManager(this));
+        rvSearchHistory.addItemDecoration(new LinearSpacingItemDecoration(LinearSpacingItemDecoration.VERTICAL, NumberUtil.dip2px(this,15)));
         searchHistoryAdapter = new SearchHistoryAdapter(R.layout.item_search_history);
-        searchHistoryAdapter.addHeaderView(headView);
         rvSearchHistory.setAdapter(searchHistoryAdapter);
         rvSearchHistory.setNestedScrollingEnabled(false);
         queryDataFromDataBase();
@@ -70,6 +74,9 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
     private void queryDataFromDataBase() {
         List<SearchHistory>searchHistoryList= DataBaseManager.getInstance(this).queryAllSearchHistory();
         if (searchHistoryList!=null&&searchHistoryList.size()>0){
+            if (searchHistoryAdapter.getHeaderLayoutCount()==0){
+                searchHistoryAdapter.addHeaderView(headView);
+            }
             searchHistoryAdapter.setNewData(searchHistoryList);
         }
     }
@@ -85,12 +92,12 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                     textView.setGravity(Gravity.CENTER);
                     textView.setPadding(padding, padding, padding, padding);
-                    textView.setBackgroundColor(SearchArticleActivity.this.getResources().getColor(R.color.divider));
                     Random random = new Random();
-                    int r = 30 + random.nextInt(210);
-                    int g = 30 + random.nextInt(210);
-                    int b = 30 + random.nextInt(210);
-                    textView.setTextColor(Color.rgb(r, g, b));
+                    int r = 45+ random.nextInt(210);
+                    int g = 45 + random.nextInt(210);
+                    int b = 45 + random.nextInt(210);
+                    textView.setBackground(DrawableUtils.getGradientDrawable(Color.rgb(r, g, b),NumberUtil.dip2px(SearchArticleActivity.this,6)));
+                    textView.setTextColor(Color.WHITE);
                     textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -118,6 +125,7 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
         showSoftInputFromWindow(this, edtKeyword);
         edtKeyword.setOnEditorActionListener(this);
         searchHistoryAdapter.setOnItemChildClickListener(this);
+        searchHistoryAdapter.setOnItemClickListener(this);
         headView.findViewById(R.id.tv_del_all).setOnClickListener(this);
     }
 
@@ -183,7 +191,13 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
                 DataBaseManager.getInstance(SearchArticleActivity.this).deleteAllSearchHistory();
                 searchHistoryAdapter.getData().clear();
                 searchHistoryAdapter.notifyDataSetChanged();
+                searchHistoryAdapter.removeAllHeaderView();
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+         showToast(position+"ddd");
     }
 }
