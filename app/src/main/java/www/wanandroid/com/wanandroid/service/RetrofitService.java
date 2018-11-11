@@ -18,7 +18,6 @@ import www.wanandroid.com.wanandroid.service.bean.KnowledgeSystem;
 import www.wanandroid.com.wanandroid.service.bean.Navigation;
 import www.wanandroid.com.wanandroid.service.bean.Project;
 import www.wanandroid.com.wanandroid.service.bean.ProjectClassification;
-import www.wanandroid.com.wanandroid.service.bean.SearchArticle;
 import www.wanandroid.com.wanandroid.service.bean.UserInfo;
 import www.wanandroid.com.wanandroid.service.bean.WxArticle;
 import www.wanandroid.com.wanandroid.service.bean.WxArticleChapters;
@@ -73,5 +72,5 @@ public interface RetrofitService {
     //搜索
     @FormUrlEncoded
     @POST("article/query/{page}/json")
-    Observable<HttpResult<SearchArticle>> searchArticle(@Path("page") int page, @Field("k") String keyWord);
+    Observable<HttpResult<IndexArticle>> searchArticle(@Path("page") int page, @Field("k") String keyWord);
 }

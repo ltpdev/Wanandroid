@@ -17,6 +17,7 @@ import java.util.List;
 
 import www.wanandroid.com.wanandroid.R;
 import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
+import www.wanandroid.com.wanandroid.utils.StringUtils;
 
 public class HomeArticleAdapter extends BaseMultiItemQuickAdapter<IndexArticle.DatasBean, BaseViewHolder> {
 
@@ -38,8 +39,13 @@ public class HomeArticleAdapter extends BaseMultiItemQuickAdapter<IndexArticle.D
         }
         tvAuthor.setText(item.getAuthor());
         helper.setText(R.id.tv_time, item.getNiceDate());
-        helper.setText(R.id.tv_title, item.getTitle());
-        helper.setText(R.id.tv_tag, item.getChapterName());
+        helper.setText(R.id.tv_title, StringUtils.stripHtml(item.getTitle()));
+        if (!TextUtils.isEmpty(item.getChapterName())){
+            helper.setVisible(R.id.tv_tag,true);
+            helper.setText(R.id.tv_tag, item.getChapterName());
+        }else {
+            helper.setVisible(R.id.tv_tag,false);
+        }
         helper.addOnClickListener(R.id.iv_love);
         if (item.isCollect()){
             helper.setImageResource(R.id.iv_love,R.mipmap.love_red);

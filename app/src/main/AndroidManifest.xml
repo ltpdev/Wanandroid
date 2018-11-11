@@ -44,9 +44,10 @@
         <activity
             android:name=".activity.KnowledgeClassifyActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".activity.SearchArticleActivity"
-            android:theme="@style/NoActionBar">
-        </activity>
+        <activity
+            android:name=".activity.SearchArticleActivity"
+            android:theme="@style/NoActionBar"></activity>
+        <activity android:name=".activity.SearchArticleResultActivity"></activity>
     </application>
 
 </manifest>

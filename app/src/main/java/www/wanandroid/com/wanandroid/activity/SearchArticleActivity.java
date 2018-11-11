@@ -101,13 +101,11 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
                     textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                          /*  ARouter.getInstance().build(Constant.ACTIVITY_URL_WEBVIEW).
-                                    withString(Constant.KEY_WEBVIEW, articlesBean.getLink())
-                                    .navigation();*/
                              SearchHistory searchHistory=new SearchHistory();
                              searchHistory.setKeyWord(hotKey.getName());
                              DataBaseManager.getInstance(SearchArticleActivity.this).save(searchHistory);
                              queryDataFromDataBase();
+                            skipActivity(hotKey.getName());
                         }
                     });
                     flowLayout.addView(textView);
@@ -149,6 +147,7 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
                     DataBaseManager.getInstance(SearchArticleActivity.this).save(searchHistory);
                     hideKeyBoard();
                     queryDataFromDataBase();
+                    skipActivity(keyword);;
                 }
                 break;
         }
@@ -164,6 +163,7 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
                 DataBaseManager.getInstance(SearchArticleActivity.this).save(searchHistory);
                 hideKeyBoard();
                 queryDataFromDataBase();
+                skipActivity(keyword);;
                 return true;
             }else {
                 return false;
@@ -198,6 +198,14 @@ public class SearchArticleActivity extends BaseActivity implements TextView.OnEd
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-         showToast(position+"ddd");
+        String keyWord=((SearchHistoryAdapter)adapter).getData().get(position).getKeyWord();
+        skipActivity(keyWord);
+    }
+
+
+    private void skipActivity(String keyword){
+        ARouter.getInstance().build(Constant.ACTIVITY_URL_SEARCH_ARTICLE_RESULT).
+                withString(Constant.KEY_WORD_SEARCH, keyword)
+                .navigation();
     }
 }
