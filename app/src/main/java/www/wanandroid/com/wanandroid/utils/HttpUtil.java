@@ -73,6 +73,11 @@ public class HttpUtil {
     public static void searchArticle(int page,String keyWord,Observer observer){
         subscribe(RetrofitClient.getInstance().createRetrofitService().searchArticle(page,keyWord),observer);
     }
+
+    //获取斗鱼直播列表
+    public static void getLiveList(String tagId,int offset,int limit,Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getLiveList(tagId,offset,limit),observer);
+    }
     //订阅关系
     private static void subscribe(Observable observable,Observer observer){
         observable.subscribeOn(Schedulers.io())

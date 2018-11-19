@@ -2,12 +2,15 @@ package www.wanandroid.com.wanandroid.constant;
 
 public class Constant {
     public final static String BASE_URL="http://www.wanandroid.com";
+    public static final String DOUYU_URL = "http://capi.douyucdn.cn";
+    public static final String GETLIVE_URL = "https://m.douyu.com";
     public static final String ACTIVITY_URL_MAIN = "/app/MainActivity";
     public static final String ACTIVITY_URL_WEBVIEW = "/app/WebViewActivity";
     public static final String ACTIVITY_URL_LOGIN = "/app/LoginActivity";
     public static final String ACTIVITY_URL_KNOWLED_GECLASSIFY = "/app/KnowledgeClassifyActivity";
     public static final String ACTIVITY_URL_SEARCH_ARTICLE = "/app/SearchArticleActivity";
     public static final String ACTIVITY_URL_SEARCH_ARTICLE_RESULT = "/app/SearchArticleResultActivity";
+    public static final String ACTIVITY_URL_DOUYU_LIVE = "/app/DouyuLiveActivity";
     public static final String ACTIVITY_URL_FRAGMENT = "/app/fragment";
     public static final String KEY_WEBVIEW = "htmlUrl";
     public static final String KEY_WORD_SEARCH= "key_word_search";
@@ -18,4 +21,10 @@ public class Constant {
     public static final String KNOWLEDGE_CID = "knowledge_cid";
     public static final String PROJECT_CID = "project_cid";
     public static final String DATABASE_NAME ="wanandroid_db" ;
+    public static final String LIVE_TAG_ID = "tag_id";
+    //请求头关键字
+    public static final String WANANDROID = "normal";
+    public static final String DOUYU = "douyu";
+    public static final String GETLIVE = "live";
+
 }

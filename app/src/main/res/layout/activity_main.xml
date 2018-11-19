@@ -60,7 +60,14 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+         <android.support.design.widget.NavigationView
+             android:id="@+id/nv_draw_layout"
+             app:headerLayout="@layout/layout_nv_header"
+             app:menu="@menu/menu_nv"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+         </android.support.design.widget.NavigationView>
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

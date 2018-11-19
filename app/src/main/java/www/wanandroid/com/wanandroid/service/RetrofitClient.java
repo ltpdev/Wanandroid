@@ -7,6 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import www.wanandroid.com.wanandroid.constant.Constant;
+import www.wanandroid.com.wanandroid.service.interceptor.BaseUrlInterceptor;
 import www.wanandroid.com.wanandroid.service.interceptor.KeepCookiesInterceptor;
 import www.wanandroid.com.wanandroid.service.interceptor.ReadCookiesInterceptor;
 
@@ -30,9 +31,10 @@ public class RetrofitClient {
     }
 
     private Retrofit createRetrofit() {
-        OkHttpClient.Builder builder=new OkHttpClient.Builder().
-                addInterceptor(new KeepCookiesInterceptor())
+        OkHttpClient.Builder builder=new OkHttpClient.Builder()
+                .addInterceptor(new KeepCookiesInterceptor())
                 .addInterceptor(new ReadCookiesInterceptor())
+                .addInterceptor(new BaseUrlInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS);

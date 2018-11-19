@@ -1,8 +1,9 @@
 package www.wanandroid.com.wanandroid.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -42,6 +43,8 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     @BindView(R.id.fb)
     FloatingActionButton fb;
+    @BindView(R.id.nv_draw_layout)
+    NavigationView nvDrawLayout;
     private FragmentManager fragmentManager;
     private long startTime;
 
@@ -112,7 +115,7 @@ public class MainActivity extends BaseActivity {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 FragmentFactory.getInstance().hideAllFragment(transaction);
                 if (!FragmentFactory.getInstance().getFragment(tabId).isAdded()) {
-                    transaction.add(R.id.fl_container,FragmentFactory.getInstance().getFragment(tabId)).commit();
+                    transaction.add(R.id.fl_container, FragmentFactory.getInstance().getFragment(tabId)).commit();
                 } else {
                     transaction.show(FragmentFactory.getInstance().getFragment(tabId)).commit();
                 }
@@ -122,6 +125,19 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new UpEvent(true));
+            }
+        });
+
+        nvDrawLayout.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.action_live:
+                        ARouter.getInstance().build(Constant.ACTIVITY_URL_DOUYU_LIVE).navigation();
+                        drawerLayout.closeDrawers();
+                        return true;
+                }
+                return false;
             }
         });
     }

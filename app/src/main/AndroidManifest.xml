@@ -46,8 +46,9 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.SearchArticleActivity"
-            android:theme="@style/NoActionBar"></activity>
-        <activity android:name=".activity.SearchArticleResultActivity"></activity>
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".activity.SearchArticleResultActivity" />
+        <activity android:name=".activity.DouyuLiveActivity" android:theme="@style/NoActionBar"></activity>
     </application>
 
 </manifest>

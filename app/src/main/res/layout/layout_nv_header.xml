@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/colorAccent"
+    android:layout_width="match_parent"
+    android:layout_height="160dp">
+    <ImageView
+        android:id="@+id/icon_user"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/user"
+        android:layout_width="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="80dp" />
+    <TextView
+        android:id="@+id/name_user"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:text="登录"/>
+</LinearLayout>
