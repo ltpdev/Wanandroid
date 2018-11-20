@@ -12,4 +12,12 @@ public class NumberUtil {
         float density=context.getResources().getDisplayMetrics().density;
         return px/density;
     }
+    //获取屏幕的宽
+    public static int getScreenWidth(Context context) {
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+    //获取屏幕的高
+    public static int getScreenHeight(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
 }

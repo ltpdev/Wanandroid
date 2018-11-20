@@ -5,14 +5,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+import www.wanandroid.com.wanandroid.utils.NumberUtil;
+
 /*自定义需求视频播放器*/
 public class IJKVideoPlayer extends FrameLayout {
     /**
@@ -24,7 +29,13 @@ public class IJKVideoPlayer extends FrameLayout {
     private SurfaceView surfaceView;
     private VideoPlayerListener videoPlayerListener;
     private Context context;
-
+    private float lastX;
+    private float lastY;
+    private int threshold = 20;   //是否误触的临界值
+    //是否启用调节亮度,和音量
+    private boolean isAdjust=false;
+    //是否启用跳到指定位置播放
+    private boolean isSeekTo=false;
     public IJKVideoPlayer(@NonNull Context context) {
         super(context);
         initVideoView(context);
@@ -207,4 +218,86 @@ public class IJKVideoPlayer extends FrameLayout {
 
         }
     }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x=event.getX();
+        float y=event.getY();
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                lastX=x;
+                lastY=y;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                //当前的手指滑动的偏移量
+                float deltaX=x-lastX;
+                float deltaY=y-lastY;
+                float absDeltaX=Math.abs(deltaX);
+                float absDeltaY=Math.abs(deltaY);
+                if (absDeltaX>threshold&&absDeltaY>threshold){
+                    //判断竖直和水平方向哪个位移比较多，就可以判断是调节音量，亮度，还是调节播放进度
+                    if (absDeltaX>absDeltaY){
+                        isAdjust=false;
+                        isSeekTo=true;
+                    }else {
+                        isAdjust=true;
+                        isSeekTo=false;
+                    }
+                }else if (absDeltaX<threshold&&absDeltaY>threshold){
+                    isAdjust=true;
+                    isSeekTo=false;
+                }else if (absDeltaX>threshold&&absDeltaY<threshold){
+                    isAdjust=false;
+                    isSeekTo=true;
+                }else {
+                    isAdjust=false;
+                    isSeekTo=false;
+                }
+                if (isSeekTo){
+                    //todo 播放位置调节
+                    if (scrollListener!=null){
+                        scrollListener.changeVideoViewPosition(-deltaX);
+                    }
+                }
+                //调节音量和屏幕亮度
+                if (isAdjust){
+                    //调节亮度
+                    if (x< NumberUtil.getScreenWidth(context)/2){
+                        if (scrollListener!=null){
+                            scrollListener.changeBrightness(-deltaY);
+                        }
+                    }else {
+                        //调节音量
+                        if (scrollListener!=null){
+                            scrollListener.changeVolume(-deltaY);
+                        }
+                    }
+                }
+                lastX=x;
+                lastY=y;
+                break;
+            case MotionEvent.ACTION_UP:
+                isAdjust=false;
+                isSeekTo=false;
+                lastX=0;
+                lastY=0;
+                break;
+        }
+        return true;
+    }
+
+    private ScrollListener scrollListener;
+
+    public void setScrollListener(ScrollListener scrollListener) {
+        this.scrollListener = scrollListener;
+    }
+
+    public interface ScrollListener{
+        void changeBrightness(float value);
+        void changeVolume(float value);
+        void changeVideoViewPosition(float value);
+    }
+
+
 }
