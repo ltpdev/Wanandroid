@@ -1,48 +1,50 @@
 package www.wanandroid.com.wanandroid.service.bean;
 
 public class CategoryTitle {
+
     /**
-     * tag_id : 1
-     * short_name : LOL
-     * tag_name : 英雄联盟
-     * tag_introduce : 《英雄联盟》(简称LOL)是由拳头游戏开发、腾讯游戏代理运营的MOBA竞技网游，拥有数百个英雄，并拥有排位系统、符文天赋系统等特色。
-     * square_icon_name : {"mob":"https://cs-op.douyucdn.cn/dycatr/78f61a979f3f80a3b8d4f017dffd5944.png","web":"https://cs-op.douyucdn.cn/dycatr/78f61a979f3f80a3b8d4f017dffd5944.png"}
-     * pic_name : https://cs-op.douyucdn.cn/dycatr/game_cate/c543faae97189c529c37b7741906d5a1.jpg
-     * pic_name2 : https://cs-op.douyucdn.cn/dycatr/game_cate/19e443be45873d57b5a9a9a5bd0658f4.jpg
-     * icon_name : https://cs-op.douyucdn.cn/dycatr/game_cate/d3e0073bfb714186ab0c818744601963.jpg
-     * small_icon_name : https://cs-op.douyucdn.cn/dycatr/game_cate/ffdc72ed97b50ad8011de9a779b8d83b.png
-     * orderdisplay : 4
+     * tag_id : 350
+     * short_name : jdqscjzc
+     * tag_name : 刺激战场
+     * tag_introduce : PUBG和腾讯光子联合出品，绝地求生正版手游，完美还原端游的纯正游戏体验。
+     * pic_name : https://cs-op.douyucdn.cn/dycatr/game_cate/76a6d8b20e6c1a465c6f1bbedc35fd41.jpg
+     * pic_name2 : https://cs-op.douyucdn.cn/dycatr/game_cate/4ab57bad82de1e9b0d02f1edf595c021.jpg
+     * icon_name : https://cs-op.douyucdn.cn/dycatr/1279662b668d897e436ccb3fb90c4286.png
+     * small_icon_name : https://cs-op.douyucdn.cn/dycatr/game_cate/5d58ae468ae5bfecb96d3c08a34dc439.png
+     * orderdisplay : 1
      * rank_score : 0
      * night_rank_score : 0
-     * nums : 20346
+     * nums : 0
      * push_ios : 1
      * push_home : 1
      * is_game_cate : 1
-     * cate_id : 1
+     * cate_id : 9
      * is_del : 0
      * is_relate : 1
      * push_vertical_screen : 0
      * push_nearby : 0
-     * push_qqapp : 1
+     * push_qqapp : 0
      * broadcast_limit : 3
-     * vodd_cateids : 5,41
+     * vodd_cateids :
      * open_full_screen : 0
      * is_audio : 0
      * is_hidden : 0
-     * pic_url : https://cs-op.douyucdn.cn/dycatr/game_cate/c543faae97189c529c37b7741906d5a1.jpg
-     * url : /directory/game/LOL
-     * icon_url : https://cs-op.douyucdn.cn/dycatr/game_cate/d3e0073bfb714186ab0c818744601963.jpg
-     * small_icon_url : https://cs-op.douyucdn.cn/dycatr/game_cate/ffdc72ed97b50ad8011de9a779b8d83b.png
-     * count : 1841
-     * count_ios : 1642
-     * is_childs : 7
+     * is_ct1_hidden : 0
+     * pic_url : https://cs-op.douyucdn.cn/dycatr/game_cate/76a6d8b20e6c1a465c6f1bbedc35fd41.jpg
+     * pic_url2 : https://cs-op.douyucdn.cn/dycatr/game_cate/4ab57bad82de1e9b0d02f1edf595c021.jpg
+     * url : /g_jdqscjzc
+     * icon_url : https://cs-op.douyucdn.cn/dycatr/1279662b668d897e436ccb3fb90c4286.png
+     * small_icon_url : https://cs-op.douyucdn.cn/dycatr/game_cate/5d58ae468ae5bfecb96d3c08a34dc439.png
+     * count : 1719
+     * count_ios : 1672
+     * square_icon_url_w : https://sta-op.douyucdn.cn/dycatr/46a88bbe9dc1e349a1d87863d9c17a83.png
+     * square_icon_url_m : https://sta-op.douyucdn.cn/dycatr/46a88bbe9dc1e349a1d87863d9c17a83.png
      */
 
     private String tag_id;
     private String short_name;
     private String tag_name;
     private String tag_introduce;
-    private String square_icon_name;
     private String pic_name;
     private String pic_name2;
     private String icon_name;
@@ -65,13 +67,16 @@ public class CategoryTitle {
     private String open_full_screen;
     private String is_audio;
     private String is_hidden;
+    private String is_ct1_hidden;
     private String pic_url;
+    private String pic_url2;
     private String url;
     private String icon_url;
     private String small_icon_url;
     private int count;
     private int count_ios;
-    private int is_childs;
+    private String square_icon_url_w;
+    private String square_icon_url_m;
 
     public String getTag_id() {
         return tag_id;
@@ -103,14 +108,6 @@ public class CategoryTitle {
 
     public void setTag_introduce(String tag_introduce) {
         this.tag_introduce = tag_introduce;
-    }
-
-    public String getSquare_icon_name() {
-        return square_icon_name;
-    }
-
-    public void setSquare_icon_name(String square_icon_name) {
-        this.square_icon_name = square_icon_name;
     }
 
     public String getPic_name() {
@@ -289,12 +286,28 @@ public class CategoryTitle {
         this.is_hidden = is_hidden;
     }
 
+    public String getIs_ct1_hidden() {
+        return is_ct1_hidden;
+    }
+
+    public void setIs_ct1_hidden(String is_ct1_hidden) {
+        this.is_ct1_hidden = is_ct1_hidden;
+    }
+
     public String getPic_url() {
         return pic_url;
     }
 
     public void setPic_url(String pic_url) {
         this.pic_url = pic_url;
+    }
+
+    public String getPic_url2() {
+        return pic_url2;
+    }
+
+    public void setPic_url2(String pic_url2) {
+        this.pic_url2 = pic_url2;
     }
 
     public String getUrl() {
@@ -337,11 +350,19 @@ public class CategoryTitle {
         this.count_ios = count_ios;
     }
 
-    public int getIs_childs() {
-        return is_childs;
+    public String getSquare_icon_url_w() {
+        return square_icon_url_w;
     }
 
-    public void setIs_childs(int is_childs) {
-        this.is_childs = is_childs;
+    public void setSquare_icon_url_w(String square_icon_url_w) {
+        this.square_icon_url_w = square_icon_url_w;
+    }
+
+    public String getSquare_icon_url_m() {
+        return square_icon_url_m;
+    }
+
+    public void setSquare_icon_url_m(String square_icon_url_m) {
+        this.square_icon_url_m = square_icon_url_m;
     }
 }

@@ -112,5 +112,5 @@ public interface RetrofitService {
      */
     @Headers({"baseUrl:douyu"})
     @GET("/api/v1/getColumnDetail")
-    Observable<HttpResult<List<CategoryTitle>>> getLiveTitle(@QueryMap Map<String, String> params);
+    Observable<HttpResult<List<CategoryTitle>>> getLiveTitle();
 }

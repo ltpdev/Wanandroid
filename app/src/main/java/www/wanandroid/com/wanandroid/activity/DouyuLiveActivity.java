@@ -20,6 +20,7 @@ import www.wanandroid.com.wanandroid.adapter.FragmentAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.fragment.LiveCategoryFragment;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
+import www.wanandroid.com.wanandroid.service.bean.CategoryTitle;
 import www.wanandroid.com.wanandroid.service.bean.LiveList;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
 
@@ -58,19 +59,24 @@ public class DouyuLiveActivity extends BaseActivity {
     }
 
     private void initData() {
-        fragments.add(LiveCategoryFragment.getInstance(""));
-        titles.add("推荐");
-        fragments.add(LiveCategoryFragment.getInstance("1"));
-        titles.add("LOL");
-        fragments.add(LiveCategoryFragment.getInstance("2"));
-        titles.add("绝地求生");
-        fragments.add(LiveCategoryFragment.getInstance("3"));
-        titles.add("王者荣耀");
-        fragments.add(LiveCategoryFragment.getInstance("4"));
-        titles.add("炉石传说");
         fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
         viewPager.setAdapter(fragmentAdapter);
         tablayout.setupWithViewPager(viewPager);
+        HttpUtil.getLiveTitle(new MyObserver<List<CategoryTitle>>() {
+            @Override
+            protected void onRequestSuccess(List<CategoryTitle> data) {
+                 for (CategoryTitle categoryTitle:data){
+                     fragments.add(LiveCategoryFragment.getInstance(categoryTitle.getTag_id()));
+                     titles.add(categoryTitle.getTag_name());
+                 }
+                fragmentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            protected void onRequestError() {
+
+            }
+        });
     }
 
 }
