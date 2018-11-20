@@ -32,6 +32,8 @@ public class LiveCategoryAdapter extends BaseQuickAdapter<LiveList, BaseViewHold
         ImageView imageView=helper.getView(R.id.iv_live_room);
         LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) imageView.getLayoutParams();
         layoutParams.height=height;
+        layoutParams.width=LinearLayout.LayoutParams.MATCH_PARENT;
+        imageView.setLayoutParams(layoutParams);
         Glide.with(mContext).load(item.getRoom_src()).into(imageView);
     }
 }

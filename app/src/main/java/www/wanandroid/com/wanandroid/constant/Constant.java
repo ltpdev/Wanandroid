@@ -11,6 +11,7 @@ public class Constant {
     public static final String ACTIVITY_URL_SEARCH_ARTICLE = "/app/SearchArticleActivity";
     public static final String ACTIVITY_URL_SEARCH_ARTICLE_RESULT = "/app/SearchArticleResultActivity";
     public static final String ACTIVITY_URL_DOUYU_LIVE = "/app/DouyuLiveActivity";
+    public static final String ACTIVITY_URL_ROOM_LIVE = "/app/LiveRoomActivity";
     public static final String ACTIVITY_URL_FRAGMENT = "/app/fragment";
     public static final String KEY_WEBVIEW = "htmlUrl";
     public static final String KEY_WORD_SEARCH= "key_word_search";
@@ -22,6 +23,7 @@ public class Constant {
     public static final String PROJECT_CID = "project_cid";
     public static final String DATABASE_NAME ="wanandroid_db" ;
     public static final String LIVE_TAG_ID = "tag_id";
+    public static final String LIVE_ROOM_ID = "room_id";
     //请求头关键字
     public static final String WANANDROID = "normal";
     public static final String DOUYU = "douyu";

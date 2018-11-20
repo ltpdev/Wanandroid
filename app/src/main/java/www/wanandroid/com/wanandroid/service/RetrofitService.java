@@ -20,6 +20,7 @@ import www.wanandroid.com.wanandroid.service.bean.IndexArticle;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeClassify;
 import www.wanandroid.com.wanandroid.service.bean.KnowledgeSystem;
 import www.wanandroid.com.wanandroid.service.bean.LiveList;
+import www.wanandroid.com.wanandroid.service.bean.LiveUrl;
 import www.wanandroid.com.wanandroid.service.bean.Navigation;
 import www.wanandroid.com.wanandroid.service.bean.Project;
 import www.wanandroid.com.wanandroid.service.bean.ProjectClassification;
@@ -104,13 +105,18 @@ public interface RetrofitService {
      * 斗鱼 直播列表
      */
     @Headers({"baseUrl:douyu"})
-    @GET("/api/v1/live/{tag_id}")
+    @GET("api/v1/live/{tag_id}")
     Observable<HttpResult<List<LiveList>>> getLiveList(@Path("tag_id") String tagId,  @Query("offset") int offset,  @Query("limit") int limit);
 
     /**
      * 斗鱼 直播标题列表
      */
     @Headers({"baseUrl:douyu"})
-    @GET("/api/v1/getColumnDetail")
+    @GET("api/v1/getColumnDetail")
     Observable<HttpResult<List<CategoryTitle>>> getLiveTitle();
+
+    //获取直播流
+    @Headers({"baseUrl:live"})
+    @GET("html5/live")
+    Observable<HttpResult<LiveUrl>>getLiveUrl(@Query("roomId") String roomId);
 }

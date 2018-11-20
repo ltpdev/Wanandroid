@@ -83,6 +83,11 @@ public class HttpUtil {
         subscribe(RetrofitClient.getInstance().createRetrofitService().getLiveTitle(),observer);
     }
 
+    //获取斗鱼直播流
+    public static void getLiveUrl(String roomId,Observer observer){
+        subscribe(RetrofitClient.getInstance().createRetrofitService().getLiveUrl(roomId),observer);
+    }
+
     //订阅关系
     private static void subscribe(Observable observable,Observer observer){
         observable.subscribeOn(Schedulers.io())

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -25,6 +26,7 @@ import www.wanandroid.com.wanandroid.constant.Constant;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.LiveList;
 import www.wanandroid.com.wanandroid.utils.HttpUtil;
+import www.wanandroid.com.wanandroid.utils.ToastUtil;
 
 /*直播分类Fragment*/
 public class LiveCategoryFragment extends LazyLoadFragment implements BaseQuickAdapter.OnItemClickListener,OnLoadMoreListener, OnRefreshListener{
@@ -62,12 +64,27 @@ public class LiveCategoryFragment extends LazyLoadFragment implements BaseQuickA
         liveCategoryAdapter.setOnItemClickListener(this);
         smartRefreshLayout.setOnLoadMoreListener(this);
         smartRefreshLayout.setOnRefreshListener(this);
+        rvClassify.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                StaggeredGridLayoutManager staggeredGridLayoutManager= (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
+                staggeredGridLayoutManager.invalidateSpanAssignments();
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
 
     private void initRecyclerView() {
         liveCategoryAdapter=new LiveCategoryAdapter(R.layout.item_live_category);
-        rvClassify.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        StaggeredGridLayoutManager staggeredGridLayoutManager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        rvClassify.setLayoutManager(staggeredGridLayoutManager);
         rvClassify.setAdapter(liveCategoryAdapter);
     }
 
@@ -110,7 +127,11 @@ public class LiveCategoryFragment extends LazyLoadFragment implements BaseQuickA
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        LiveList liveList=((LiveCategoryAdapter)adapter).getData().get(position);
+        ARouter.getInstance()
+                .build(Constant.ACTIVITY_URL_ROOM_LIVE)
+                .withString(Constant.LIVE_ROOM_ID,liveList.getRoom_id())
+                .navigation();
     }
 
     @Override
