@@ -6,10 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.LiveRoomActivity">
-    <www.wanandroid.com.wanandroid.widget.IJKVideoPlayer
-        android:id="@+id/videoPlayer"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp">
-    </www.wanandroid.com.wanandroid.widget.IJKVideoPlayer>
+        <www.wanandroid.com.wanandroid.widget.IJKVideoPlayer
+            android:id="@+id/videoPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </www.wanandroid.com.wanandroid.widget.IJKVideoPlayer>
+
+    </FrameLayout>
+
 
 </LinearLayout>

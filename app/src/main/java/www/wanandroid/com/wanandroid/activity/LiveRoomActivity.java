@@ -1,8 +1,15 @@
 package www.wanandroid.com.wanandroid.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -27,12 +34,25 @@ public class LiveRoomActivity extends BaseActivity implements IJKVideoPlayer.Scr
     @Autowired(name = Constant.LIVE_ROOM_ID)
     String roomId;
     private float screenBrightness;
+    private AudioManager audioManager;
+    private PopupWindow popupWindow;
 
     @Override
     protected void init() {
         initIJKPlayer();
         initlistener();
+        initAudioManager();
         requestData();
+    }
+
+    private void initAudioManager() {
+        audioManager= (AudioManager) getSystemService(AUDIO_SERVICE);
+        View contentView= LayoutInflater.from(this).inflate(R.layout.layout_video_adjust, null, false);
+        popupWindow=new PopupWindow(contentView,100,100,true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setTouchable(true);
+        popupWindow.setOutsideTouchable(true);
+
     }
 
 
@@ -122,12 +142,28 @@ public class LiveRoomActivity extends BaseActivity implements IJKVideoPlayer.Scr
         xx=Float.parseFloat(String.format("%.2f", xx));
         int radio= (int) (xx*100);
         Log.i("screenBrightness", "screenBrightness: "+radio+"%");
+        popupWindow.showAtLocation(videoPlayer, Gravity.CENTER, 0, 0);
     }
 
     @Override
     public void changeVolume(float value) {
+         int maxVolume=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+         int current=audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+         int index= (int) (value/NumberUtil.getScreenHeight(this)*maxVolume*3);
+         int volume=Math.max(current+index,0);
+         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,volume,0);
+        float xx=(float)volume/maxVolume;
+        xx=Float.parseFloat(String.format("%.2f", xx));
+        int radio= (int) (xx*100);
+        if (radio>100){
+            radio=100;
+        }
+        Log.i("Volume", "Volume: "+radio+"%");
+
 
     }
+
+
 
     @Override
     public void changeVideoViewPosition(float value) {
