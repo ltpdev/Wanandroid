@@ -278,6 +278,9 @@ public class IJKVideoPlayer extends FrameLayout {
                 lastY=y;
                 break;
             case MotionEvent.ACTION_UP:
+                if (scrollListener!=null){
+                    scrollListener.scrollEnd();
+                }
                 isAdjust=false;
                 isSeekTo=false;
                 lastX=0;
@@ -297,6 +300,7 @@ public class IJKVideoPlayer extends FrameLayout {
         void changeBrightness(float value);
         void changeVolume(float value);
         void changeVideoViewPosition(float value);
+        void scrollEnd();
     }
 
 

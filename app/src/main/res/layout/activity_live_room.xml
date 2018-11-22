@@ -6,14 +6,80 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.LiveRoomActivity">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp">
+
         <www.wanandroid.com.wanandroid.widget.IJKVideoPlayer
             android:id="@+id/videoPlayer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </www.wanandroid.com.wanandroid.widget.IJKVideoPlayer>
+            android:layout_height="match_parent"></www.wanandroid.com.wanandroid.widget.IJKVideoPlayer>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <RelativeLayout
+                android:id="@+id/view_back"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/drawable_live_circle_play">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/icon_live_back" />
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+        <!--声音亮度-->
+        <RelativeLayout
+            android:id="@+id/view_control"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/drawable_control"
+            android:visibility="gone">
+
+            <www.wanandroid.com.wanandroid.widget.CustomCircleProgressBar
+                android:id="@+id/circle_progressBar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                app:direction="left"
+                app:inside_color="@android:color/darker_gray"
+                app:max_progress="1"
+                app:outside_color="@color/colorPrimary"
+                app:outside_radius="28dp"
+                app:progress="0"
+                app:progress_width="2dp" />
+
+            <TextView
+                android:id="@+id/tv_control_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/circle_progressBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:text="22"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
 
     </FrameLayout>
 
