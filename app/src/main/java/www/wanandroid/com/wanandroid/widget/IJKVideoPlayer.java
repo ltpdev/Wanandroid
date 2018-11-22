@@ -133,7 +133,6 @@ public class IJKVideoPlayer extends FrameLayout {
         addTouchListener();
         //获取焦点
         setFocusable(true);
-        addTouchListener();
     }
 
     /**
