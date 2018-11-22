@@ -8,6 +8,7 @@
     tools:context=".activity.LiveRoomActivity">
 
     <FrameLayout
+        android:id="@+id/fl_video_player"
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
@@ -15,8 +16,33 @@
             android:id="@+id/videoPlayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></www.wanandroid.com.wanandroid.widget.IJKVideoPlayer>
+<!--加载进度框-->
+        <RelativeLayout
+            android:id="@+id/rl_loading"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#de262a3b">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:indeterminate="false" />
+
+            <TextView
+                android:id="@+id/tv_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/progressBar"
+                android:layout_centerHorizontal="true"
+                android:text="正在加载...."
+                android:textColor="#fff" />
+        </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_video_control"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent">
@@ -35,14 +61,88 @@
                     android:src="@mipmap/icon_live_back" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/tv_room_name"
+                android:textColor="@color/white"
+                android:text=""
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/view_back"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
 
+            <RelativeLayout
+                android:id="@+id/view_float_window"
+                android:layout_alignParentRight="true"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/drawable_live_circle_play">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/float_window" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_centerVertical="true"
+                    android:id="@+id/view_play"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/drawable_live_circle_play">
+
+                    <ImageView
+                        android:id="@+id/iv_live_play"
+                        android:layout_width="26dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/icon_play" />
+                </RelativeLayout>
 
 
+                <RelativeLayout
+                    android:layout_toLeftOf="@+id/view_full_screen"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/view_danmu"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/drawable_live_circle_play">
+
+                    <ImageView
+                        android:id="@+id/iv_danmu"
+                        android:layout_width="26dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/icon_danmu_close" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/view_full_screen"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/drawable_live_circle_play">
+
+                    <ImageView
+                        android:id="@+id/iv_full_screen"
+                        android:layout_width="26dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/icon_full_screen" />
+                </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
         <!--声音亮度-->

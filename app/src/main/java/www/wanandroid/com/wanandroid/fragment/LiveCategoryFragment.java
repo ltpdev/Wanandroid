@@ -131,6 +131,7 @@ public class LiveCategoryFragment extends LazyLoadFragment implements BaseQuickA
         ARouter.getInstance()
                 .build(Constant.ACTIVITY_URL_ROOM_LIVE)
                 .withString(Constant.LIVE_ROOM_ID,liveList.getRoom_id())
+                .withString(Constant.LIVE_ROOM_NAME,liveList.getRoom_name())
                 .navigation();
     }
 

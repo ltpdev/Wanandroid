@@ -1,11 +1,13 @@
 package www.wanandroid.com.wanandroid.widget;
 
+import android.accessibilityservice.GestureDescription;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -36,6 +38,7 @@ public class IJKVideoPlayer extends FrameLayout {
     private boolean isAdjust=false;
     //是否启用跳到指定位置播放
     private boolean isSeekTo=false;
+    private GestureDetector gestureDetector;
     public IJKVideoPlayer(@NonNull Context context) {
         super(context);
         initVideoView(context);
@@ -49,12 +52,88 @@ public class IJKVideoPlayer extends FrameLayout {
     public IJKVideoPlayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initVideoView(context);
+
+    }
+//添加手势事件
+    private void addTouchListener() {
+        GestureDetector.SimpleOnGestureListener simpleOnGestureListener=new GestureDetector.SimpleOnGestureListener(){
+            //滑动事件
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                float x=e1.getX();
+                float deltaX=distanceX;
+                float deltaY=distanceY;
+                float absDeltaX=Math.abs(deltaX);
+                float absDeltaY=Math.abs(deltaY);
+                if (absDeltaX>threshold&&absDeltaY>threshold){
+                    //判断竖直和水平方向哪个位移比较多，就可以判断是调节音量，亮度，还是调节播放进度
+                    if (absDeltaX>absDeltaY){
+                        isAdjust=false;
+                        isSeekTo=true;
+                    }else {
+                        isAdjust=true;
+                        isSeekTo=false;
+                    }
+                }else if (absDeltaX<threshold&&absDeltaY>threshold){
+                    isAdjust=true;
+                    isSeekTo=false;
+                }else if (absDeltaX>threshold&&absDeltaY<threshold){
+                    isAdjust=false;
+                    isSeekTo=true;
+                }else {
+                    isAdjust=false;
+                    isSeekTo=false;
+                }
+                if (isSeekTo){
+                    //todo 播放位置调节
+                    if (scrollListener!=null){
+                        scrollListener.changeVideoViewPosition(-deltaX);
+                    }
+                }
+                //调节音量和屏幕亮度
+                if (isAdjust){
+                    //调节亮度
+                    if (x< NumberUtil.getScreenWidth(context)/2){
+                        if (scrollListener!=null){
+                            scrollListener.changeBrightness(-deltaY);
+                        }
+                    }else {
+                        //调节音量
+                        if (scrollListener!=null){
+                            scrollListener.changeVolume(-deltaY);
+                        }
+                    }
+                    return true;
+                }
+
+                return super.onScroll(e1, e2, distanceX, distanceY);
+            }
+
+            //单击事件
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                Log.i("onSingleTapConfirmed","点击");
+                if (scrollListener!=null){
+                    scrollListener.onSingleTap();
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return super.onSingleTapUp(e);
+            }
+        };
+
+        gestureDetector=new GestureDetector(getContext(),simpleOnGestureListener);
     }
 
     private void initVideoView(Context context) {
         this.context = context;
+        addTouchListener();
         //获取焦点
         setFocusable(true);
+        addTouchListener();
     }
 
     /**
@@ -222,72 +301,11 @@ public class IJKVideoPlayer extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x=event.getX();
-        float y=event.getY();
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                lastX=x;
-                lastY=y;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                //当前的手指滑动的偏移量
-                float deltaX=x-lastX;
-                float deltaY=y-lastY;
-                float absDeltaX=Math.abs(deltaX);
-                float absDeltaY=Math.abs(deltaY);
-                if (absDeltaX>threshold&&absDeltaY>threshold){
-                    //判断竖直和水平方向哪个位移比较多，就可以判断是调节音量，亮度，还是调节播放进度
-                    if (absDeltaX>absDeltaY){
-                        isAdjust=false;
-                        isSeekTo=true;
-                    }else {
-                        isAdjust=true;
-                        isSeekTo=false;
-                    }
-                }else if (absDeltaX<threshold&&absDeltaY>threshold){
-                    isAdjust=true;
-                    isSeekTo=false;
-                }else if (absDeltaX>threshold&&absDeltaY<threshold){
-                    isAdjust=false;
-                    isSeekTo=true;
-                }else {
-                    isAdjust=false;
-                    isSeekTo=false;
-                }
-                if (isSeekTo){
-                    //todo 播放位置调节
-                    if (scrollListener!=null){
-                        scrollListener.changeVideoViewPosition(-deltaX);
-                    }
-                }
-                //调节音量和屏幕亮度
-                if (isAdjust){
-                    //调节亮度
-                    if (x< NumberUtil.getScreenWidth(context)/2){
-                        if (scrollListener!=null){
-                            scrollListener.changeBrightness(-deltaY);
-                        }
-                    }else {
-                        //调节音量
-                        if (scrollListener!=null){
-                            scrollListener.changeVolume(-deltaY);
-                        }
-                    }
-                }
-                lastX=x;
-                lastY=y;
-                break;
-            case MotionEvent.ACTION_UP:
-                if (scrollListener!=null){
-                    scrollListener.scrollEnd();
-                }
-                isAdjust=false;
-                isSeekTo=false;
-                lastX=0;
-                lastY=0;
-                break;
+        if (gestureDetector != null){
+             gestureDetector.onTouchEvent(event);
+             return true;
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     private ScrollListener scrollListener;
@@ -301,6 +319,7 @@ public class IJKVideoPlayer extends FrameLayout {
         void changeVolume(float value);
         void changeVideoViewPosition(float value);
         void scrollEnd();
+        void onSingleTap();
     }
 
 

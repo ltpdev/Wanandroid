@@ -24,9 +24,11 @@ public class Constant {
     public static final String DATABASE_NAME ="wanandroid_db" ;
     public static final String LIVE_TAG_ID = "tag_id";
     public static final String LIVE_ROOM_ID = "room_id";
+    public static final String LIVE_ROOM_NAME = "room_name";
     //请求头关键字
     public static final String WANANDROID = "normal";
     public static final String DOUYU = "douyu";
     public static final String GETLIVE = "live";
+
 
 }
