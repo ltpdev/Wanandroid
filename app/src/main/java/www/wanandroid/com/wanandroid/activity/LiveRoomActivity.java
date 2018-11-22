@@ -4,6 +4,10 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +20,20 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import www.wanandroid.com.wanandroid.R;
+import www.wanandroid.com.wanandroid.adapter.FragmentAdapter;
 import www.wanandroid.com.wanandroid.constant.Constant;
+import www.wanandroid.com.wanandroid.fragment.AnchorFragment;
+import www.wanandroid.com.wanandroid.fragment.LiveChatFragment;
+import www.wanandroid.com.wanandroid.fragment.RankFragment;
 import www.wanandroid.com.wanandroid.manager.ThreadPoolManager;
 import www.wanandroid.com.wanandroid.observer.MyObserver;
 import www.wanandroid.com.wanandroid.service.bean.LiveUrl;
@@ -67,11 +78,16 @@ public class LiveRoomActivity extends BaseActivity implements IJKVideoPlayer.Scr
     RelativeLayout viewDanmu;
     @BindView(R.id.view_full_screen)
     RelativeLayout viewFullScreen;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
     private float screenBrightness;
     private AudioManager audioManager;
     //是否全屏
     private boolean isFulled = false;
     private boolean isLiveing = true;
+    private FragmentAdapter fragmentAdapter;
 
 
     @Override
@@ -79,9 +95,24 @@ public class LiveRoomActivity extends BaseActivity implements IJKVideoPlayer.Scr
         initIJKPlayer();
         initlistener();
         initAudioManager();
+        initViewPager();
         requestData();
         KeepLive keepLive = new KeepLive();
         ThreadPoolManager.getInstance().getCachedThreadPool().execute(keepLive);
+    }
+
+    private void initViewPager() {
+        List<Fragment>fragments=new ArrayList<>();
+        fragments.add(LiveChatFragment.getInstance());
+        fragments.add(AnchorFragment.getInstance());
+        fragments.add(RankFragment.getInstance());
+        List<String>titles=new ArrayList<>();
+        titles.add("聊天");
+        titles.add("主播");
+        titles.add("排行榜");
+        fragmentAdapter=new FragmentAdapter(getSupportFragmentManager(),fragments,titles);
+        viewPager.setAdapter(fragmentAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void initAudioManager() {
@@ -300,19 +331,23 @@ public class LiveRoomActivity extends BaseActivity implements IJKVideoPlayer.Scr
 
     @Override
     public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
+        /*
+        * int MEDIA_INFO_VIDEO_RENDERING_START = 3;//视频准备渲染
+        int MEDIA_INFO_BUFFERING_START = 701;//开始缓冲
+        int MEDIA_INFO_BUFFERING_END = 702;//缓冲结束
+        int MEDIA_INFO_VIDEO_ROTATION_CHANGED = 10001;//视频选择信息
+        int MEDIA_ERROR_SERVER_DIED = 100;//视频中断，一般是视频源异常或者不支持的视频类型。
+        int MEDIA_ERROR_IJK_PLAYER = -10000,//一般是视频源有问题或者数据格式不支持，比如音频不是AAC之类的
+        int MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK = 200;//数据错误没有有效的回收*/
         switch (what) {
-            //MEDIA_INFO_DOWNLOAD_RATE_CHANGED
-            case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
             case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
                 rlLoading.setVisibility(View.VISIBLE);
                 break;
             case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-            case IMediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
-            case IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
                 rlLoading.setVisibility(View.GONE);
                 break;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -376,6 +411,7 @@ public class LiveRoomActivity extends BaseActivity implements IJKVideoPlayer.Scr
             super.onBackPressed();
         }
     }
+
 
 
 

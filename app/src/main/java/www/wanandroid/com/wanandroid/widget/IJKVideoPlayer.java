@@ -31,14 +31,13 @@ public class IJKVideoPlayer extends FrameLayout {
     private SurfaceView surfaceView;
     private VideoPlayerListener videoPlayerListener;
     private Context context;
-    private float lastX;
-    private float lastY;
     private int threshold = 20;   //是否误触的临界值
     //是否启用调节亮度,和音量
-    private boolean isAdjust=false;
+    private boolean isAdjust = false;
     //是否启用跳到指定位置播放
-    private boolean isSeekTo=false;
+    private boolean isSeekTo = false;
     private GestureDetector gestureDetector;
+
     public IJKVideoPlayer(@NonNull Context context) {
         super(context);
         initVideoView(context);
@@ -54,52 +53,53 @@ public class IJKVideoPlayer extends FrameLayout {
         initVideoView(context);
 
     }
-//添加手势事件
+
+    //添加手势事件
     private void addTouchListener() {
-        GestureDetector.SimpleOnGestureListener simpleOnGestureListener=new GestureDetector.SimpleOnGestureListener(){
+        GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
             //滑动事件
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                float x=e1.getX();
-                float deltaX=distanceX;
-                float deltaY=distanceY;
-                float absDeltaX=Math.abs(deltaX);
-                float absDeltaY=Math.abs(deltaY);
-                if (absDeltaX>threshold&&absDeltaY>threshold){
+                float x = e1.getX();
+                float deltaX = distanceX;
+                float deltaY = distanceY;
+                float absDeltaX = Math.abs(deltaX);
+                float absDeltaY = Math.abs(deltaY);
+                if (absDeltaX > threshold && absDeltaY > threshold) {
                     //判断竖直和水平方向哪个位移比较多，就可以判断是调节音量，亮度，还是调节播放进度
-                    if (absDeltaX>absDeltaY){
-                        isAdjust=false;
-                        isSeekTo=true;
-                    }else {
-                        isAdjust=true;
-                        isSeekTo=false;
+                    if (absDeltaX > absDeltaY) {
+                        isAdjust = false;
+                        isSeekTo = true;
+                    } else {
+                        isAdjust = true;
+                        isSeekTo = false;
                     }
-                }else if (absDeltaX<threshold&&absDeltaY>threshold){
-                    isAdjust=true;
-                    isSeekTo=false;
-                }else if (absDeltaX>threshold&&absDeltaY<threshold){
-                    isAdjust=false;
-                    isSeekTo=true;
-                }else {
-                    isAdjust=false;
-                    isSeekTo=false;
+                } else if (absDeltaX < threshold && absDeltaY > threshold) {
+                    isAdjust = true;
+                    isSeekTo = false;
+                } else if (absDeltaX > threshold && absDeltaY < threshold) {
+                    isAdjust = false;
+                    isSeekTo = true;
+                } else {
+                    isAdjust = false;
+                    isSeekTo = false;
                 }
-                if (isSeekTo){
+                if (isSeekTo) {
                     //todo 播放位置调节
-                    if (scrollListener!=null){
+                    if (scrollListener != null) {
                         scrollListener.changeVideoViewPosition(-deltaX);
                     }
                 }
                 //调节音量和屏幕亮度
-                if (isAdjust){
+                if (isAdjust) {
                     //调节亮度
-                    if (x< NumberUtil.getScreenWidth(context)/2){
-                        if (scrollListener!=null){
+                    if (x < NumberUtil.getScreenWidth(context) / 2) {
+                        if (scrollListener != null) {
                             scrollListener.changeBrightness(-deltaY);
                         }
-                    }else {
+                    } else {
                         //调节音量
-                        if (scrollListener!=null){
+                        if (scrollListener != null) {
                             scrollListener.changeVolume(-deltaY);
                         }
                     }
@@ -112,8 +112,8 @@ public class IJKVideoPlayer extends FrameLayout {
             //单击事件
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                Log.i("onSingleTapConfirmed","点击");
-                if (scrollListener!=null){
+                Log.i("onSingleTapConfirmed", "点击");
+                if (scrollListener != null) {
                     scrollListener.onSingleTap();
                 }
                 return true;
@@ -125,7 +125,7 @@ public class IJKVideoPlayer extends FrameLayout {
             }
         };
 
-        gestureDetector=new GestureDetector(getContext(),simpleOnGestureListener);
+        gestureDetector = new GestureDetector(getContext(), simpleOnGestureListener);
     }
 
     private void initVideoView(Context context) {
@@ -300,9 +300,9 @@ public class IJKVideoPlayer extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (gestureDetector != null){
-             gestureDetector.onTouchEvent(event);
-             return true;
+        if (gestureDetector != null) {
+            gestureDetector.onTouchEvent(event);
+            return true;
         }
         return super.onTouchEvent(event);
     }
@@ -313,11 +313,15 @@ public class IJKVideoPlayer extends FrameLayout {
         this.scrollListener = scrollListener;
     }
 
-    public interface ScrollListener{
+    public interface ScrollListener {
         void changeBrightness(float value);
+
         void changeVolume(float value);
+
         void changeVideoViewPosition(float value);
+
         void scrollEnd();
+
         void onSingleTap();
     }
 
